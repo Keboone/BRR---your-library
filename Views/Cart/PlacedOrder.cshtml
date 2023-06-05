@@ -1,0 +1,18 @@
+﻿@model Order
+@{
+    ViewData["Title"] = "Zamówienie";
+}
+
+<h1>Potwierdzenie przyjęcia rezerwacji</h1>
+<dl>
+    <dt>Id</dt>
+    <dd>@Model.Id</dd>
+    <dt>Data złożenia rezerwacji</dt>
+    <dd>@Model.Date</dd>
+    <dt>Numer karty czytelnika</dt>
+    <dd>@Model.ReaderCardNumber</dd>
+    <dt>Adres</dt>
+    <dd>@Model.Address</dd>
+    <dt>Telefon</dt>
+    <dd>@Model.Phone</dd>
+</dl>

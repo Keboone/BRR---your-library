@@ -1,0 +1,22 @@
+﻿@model Order
+
+@using (Html.BeginForm("CreateOrder", "Cart", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.ReaderCardNumber)
+        @Html.TextBoxFor(m => m.ReaderCardNumber, new {@class = "form-control"})
+        @Html.ValidationMessageFor(m => m.ReaderCardNumber, null, new {@class = "text-danger"})
+    </div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Address)
+		@Html.TextBoxFor(m => m.Address, new {@class = "form-control"})
+		@Html.ValidationMessageFor(m => m.Address, null, new {@class = "text-danger"})
+	</div>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Phone)
+		@Html.TextBoxFor(m => m.Phone, new {@class = "form-control"})
+		@Html.ValidationMessageFor(m => m.Phone, null, new {@class = "text-danger"})
+	</div>
+
+    <button type="submit" class="btn btn-outline-primary my-2">Zamów</button>
+}

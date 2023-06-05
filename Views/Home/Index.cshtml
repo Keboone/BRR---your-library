@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<body class="body-background" onload="onLoad()">
+    <div class="text-center">
+        <h1 class="title">BRR - your library</h1>
+        <h2 class="abbr">BORROW</h2>
+        <h2 class="abbr">READ</h2>
+        <h2 class="abbr">REPEAT</h2>
+        @*<img src="images/library.jpg" alt="Tu powinno być zdjęcie naszej biblioteki XD" />*@
+        @*<h1 class="display-4"><small><mark>"Założyć bibliotekę to jak stworzyć życie"</mark> <br /> (Carlos María Domínguez, <i> Dom z papieru</i>)</small></h1>*@
+
+        <div class="text-center" id="fade">
+            <h1 id="quote"><mark>Quote</mark></h1>
+            <p id="author" class="author"><mark>Author</mark></p>
+        </div>
+
+        <script>
+            let allQuotes = {};
+
+            var currentQuoteNumber = 0;
+
+            const quoteTime = 6000;
+
+            const updateQuoteTime = 1200;
+
+            let apiEndpoint = 'https://type.fit/api/quotes';
+
+            let currentQuote = {};
+
+            let numberOfQuotes = 0;
+
+            function onLoad() {
+                loadQuotes()
+                    .then(data => setUpQuoteDisplay(data));
+            }
+
+            function loadQuotes() {
+                return fetch(apiEndpoint)
+                    .then(response => response.json())
+                    .catch(error => console.log(error));
+            }
+
+            function setUpQuoteDisplay(quotes) {
+                allQuotes = quotes;
+                numberOfQuotes = quotes.length;
+                document.getElementById("quote").innerHTML = quotes[0].text;
+                document.getElementById("author").innerHTML = quotes[0].author;
+                setInterval(changeQuote, quoteTime);
+            }
+
+            function changeQuote() {
+                currentQuoteNumber = currentQuoteNumber + 1;
+                currentQuoteNumber = currentQuoteNumber % numberOfQuotes;
+                currentQuote = allQuotes[currentQuoteNumber];
+                updateQuoteDiv();
+            }
+
+            function updateHtml() {
+                document.getElementById("quote").innerHTML = currentQuote.text;
+                document.getElementById("author").innerHTML = currentQuote.author;
+                document.getElementById("fade").style.opacity = 1;
+            }
+
+            function fadeOut() {
+                document.getElementById("fade").style.opacity = 0;
+            }
+
+            function updateQuoteDiv() {
+                fadeOut();
+                updateHtml();
+                setTimeout(updateHtml, updateQuoteTime);
+            }
+        </script>
+        <style>
+            body {
+                background-color: rgb(56, 47, 47);
+                color: white;
+            }
+            .body-background {
+                background-image: url('images/libr.jpg');
+                background-repeat: no-repeat;
+                background-size: cover;
+            }
+
+            .text-center {
+                margin-top: 50px;
+            }
+        
+            #fade {
+                opacity: 1;
+                transition: 1s opacity;
+                font-size: 32px;
+                padding: 50px;
+                margin: auto;
+                margin-top: 50px;
+                background-color: darkgoldenrod;
+                max-width: 1000px;
+                border-radius: 20px;
+                font-style: italic;
+            }
+            .title {
+                font-family: Lato;
+                font-size: 60px;
+                color: darkgoldenrod;
+                text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+            }
+
+            .abbr {
+                font-family: Lato;
+                font-size: 40px;
+                color: darkgoldenrod;
+                text-shadow: -2px 0 white, 0 2px white, 2px 0 white, 0 -2px white;
+            }
+        </style>
+
+
+    </div>
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js%22%3E"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js%22%3E"></script>
+    <script src="..wwwwroot/js/quoteScript.js"></script>*@
+</body>

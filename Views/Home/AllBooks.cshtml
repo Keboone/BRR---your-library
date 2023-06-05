@@ -1,0 +1,65 @@
+﻿@model IEnumerable<LibraryFinal.Models.Book>
+
+@{
+    ViewData["Title"] = "Wybór książek";
+}
+
+<h1>Książki do wypożyczenia:</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Numer</th>
+            <th>Tytuł</th>
+            <th>Autor</th>
+            <th>Ilość stron</th>
+            <th>Zdjęcie</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var book in Model)
+        {
+            <tr>
+                <td>
+                    @book.Id
+                </td>
+                <td>
+                    @book.Title
+                </td>
+                <td>
+                    @book.Author
+                </td>
+                <td>
+                    @book.Pages
+                </td>
+                <td>
+                    <img src="~/images/@book.Image" style="height: 12rem; width: 9rem" class="rounded" />
+                </td>
+                <td>
+                    @Html.ActionLink("Szczegóły", "BookDetails", new { id = book.Id })
+                    <button class="btn btn-outline-primary mx-2 add-button" value="@book.Id">Dodaj do wypożyczenia</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts
+    {
+    <script>
+        $(".add-button").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/Cart/AddItem",
+                data: { itemId: $(this).val() },
+                success: function () {
+                    alert("Książka dodana");
+                },
+                error: function () {
+                    alert("Błąd!");
+                }
+            });
+        });
+    </script>
+}

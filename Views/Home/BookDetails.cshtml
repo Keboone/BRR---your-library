@@ -1,0 +1,15 @@
+﻿@model LibraryFinal.Models.Book
+
+@{
+    ViewData["Title"] = "Szczegóły książki";
+}
+<h1><small><small>Szczegóły książki:</small></small></h1>
+<h4><big><big>@Model.Title</big></big><strong></strong></h4>
+<h4>Numer pozycji: @Model.Id</h4>
+<img class="rounded" src="~/images/@Model.Image" style="height: 24rem; width: 18rem" />
+<h5><br />Krótki opis książki:</h5>
+<p>@Model.Description</p>
+<h5>Ilość stron: @Model.Pages</h5>
+
+<hr />
+<a asp-action="AllBooks">Powrót</a>

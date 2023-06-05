@@ -1,0 +1,79 @@
+﻿@model IEnumerable<CartItem>
+
+@{
+    ViewData["Title"] = "Koszyk";
+}
+
+<h1>Zamówione książki:</h1>
+
+@if (Model.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tytuł</th>
+                <th>Okres wypożyczenia</th>
+                <th>Ilość</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="row-@item.Id">
+                    <td>@item.Title</td>
+                    <td>Książka powinna zostać zwrócona w ciągu @(@item.Id * 4) dni.</td>
+                    <td id="count-@item.Id">@item.Count</td>
+                    <td>
+                        <button class="btn btn-outline-primary mx-1 sub-button" value="@item.Id">-</button>
+                        <button class="btn btn-outline-primary mx-1 add-button" value="@item.Id">+</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    @Html.ActionLink("Zamów", "CreateOrder", "Cart", null, new {@class = "btn btn-primary"})
+}
+else
+{
+    <h5>Brak zamówionych książek</h5>
+}
+
+@section Scripts
+    {
+    <script>
+        $(".add-button").click(function() {
+            $.ajax({
+                type: "POST",
+                url: "/Cart/AddItem",
+                data: { itemId: $(this).val() },
+                success: function(response) {
+                    document.getElementById(`count-${response.id}`).innerHTML = response.count;
+                    document.getElementById(`price-${response.id}`).innerHTML = (response.count * response.price).toFixed(2);
+                },
+                error: function() {
+                    alert("Błąd!");
+                }
+            });
+        });
+
+        $(".sub-button").click(function() {
+            $.ajax({
+                type: "POST",
+                url: "/Cart/DeleteItem",
+                data: { itemId: $(this).val() },
+                success: function(response) {
+                    if (response.count > 0) {
+                        document.getElementById(`count-${response.id}`).innerHTML = response.count;
+                        document.getElementById(`price-${response.id}`).innerHTML = (response.count * response.price).toFixed(2);
+                    } else {
+                        document.getElementById(`row-${response.id}`).remove();
+                    }
+                },
+                error: function() {
+                    alert("Błąd!");
+                }
+            });
+        });
+    </script>
+}
